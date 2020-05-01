@@ -60,12 +60,5 @@ public class FlightDTO {
     public String toString() {
         return "FlightDTO{" + "Dates=" + Dates + ", Quotes=" + Quotes + ", Places=" + Places + ", Carriers=" + Carriers + '}';
     }
-    
-    public static void main(String[] args) throws IOException {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String test = HttpUtils.fetchData("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsedates/v1.0/US/USD/en-US/lond/pari/2020-05/2020-06", "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com", "e0d467d76bmsh9ff99e16d60d6c1p11ec83jsn67c7df490a96");
-        FlightDTO testDTO = gson.fromJson(test, FlightDTO.class);
-        System.out.println(gson.fromJson(test, FlightDTO.class));
-    }
-    
+        
 }

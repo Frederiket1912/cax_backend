@@ -2,14 +2,6 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dtos.ChuckDTO;
-import dtos.CombinedDTO;
-import dtos.DTOInterface;
-import dtos.DadDTO;
-import dtos.DogImgDTO;
-import dtos.SkyscannerDTO;
-import dtos.WeatherDTO;
-import dtos.WeatherDTO;
 import entities.User;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +25,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import utils.EMF_Creator;
 import utils.HttpUtils;
+import utils.SetupTestUsers;
 
 /**
  * @author lam@cphbusiness.dk
@@ -87,44 +80,5 @@ public class DemoResource {
         return "{\"msg\": \"Hello to (admin) User: " + thisuser + "\"}";
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("test")
-    @RolesAllowed({"admin", "user"})
-    public String getThingsFromMultipleAPIs() throws InterruptedException, IOException {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-        ChuckDTO chuckDTO = new ChuckDTO("https://api.chucknorris.io/jokes/random");
-        DadDTO dadDTO = new DadDTO("https://icanhazdadjoke.com");
-        DogImgDTO diDTO = new DogImgDTO("https://dog.ceo/api/breeds/image/random");
-        SkyscannerDTO scannerDTO = new SkyscannerDTO();
-        WeatherDTO weatherDTO = new WeatherDTO();
-
-        List<DTOInterface> dtos = new ArrayList<>();
-        dtos.add(chuckDTO);
-        dtos.add(dadDTO);
-        dtos.add(diDTO);
-        dtos.add(scannerDTO);
-        dtos.add(weatherDTO);
-        
-        ExecutorService workingJack = Executors.newFixedThreadPool(5);
-        for (DTOInterface dto : dtos) {
-        Runnable task  = new Runnable() {
-                @Override
-                public void run() {
-                    dto.fetch();
-                }
-            };
-        workingJack.submit(task);
-        }
-        
-        workingJack.shutdown();
-        workingJack.awaitTermination(15, TimeUnit.SECONDS);
-        CombinedDTO combinedDTO = new CombinedDTO(dadDTO, chuckDTO, diDTO, weatherDTO, scannerDTO);
-        //This is what your endpoint should return       
-        String combinedJSON = gson.toJson(combinedDTO);
-        return combinedJSON;
-
-    }
-
+    
 }
