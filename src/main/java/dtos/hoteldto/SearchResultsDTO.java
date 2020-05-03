@@ -3,7 +3,7 @@ package dtos.hoteldto;
 import java.util.ArrayList;
 
 
-class SearchResultsDTO {
+public class SearchResultsDTO {
     ArrayList<ResultsDTO> results;
 
     public SearchResultsDTO() {

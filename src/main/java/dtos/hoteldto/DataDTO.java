@@ -1,7 +1,7 @@
 package dtos.hoteldto;
 
 
-class DataDTO {
+public class DataDTO {
     BodyDTO body;
     private boolean failed;
 

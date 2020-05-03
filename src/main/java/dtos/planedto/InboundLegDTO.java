@@ -3,7 +3,7 @@ package dtos.planedto;
 import java.util.ArrayList;
 
 
-class InboundLegDTO {
+public class InboundLegDTO {
     ArrayList<Integer> CarrierIds;
     int OriginId;
     int DestinationId;

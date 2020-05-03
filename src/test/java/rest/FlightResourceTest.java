@@ -2,6 +2,8 @@ package rest;
 
 import dtos.hoteldto.HotelDTO;
 import dtos.hoteldto.HotelSearchDTO;
+import dtos.planedto.CarriersDTO;
+import dtos.planedto.FlightDTO;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.with;
@@ -60,7 +62,7 @@ public class FlightResourceTest {
     }
     
     
-    @Test
+    @Ignore
     public void testGetFlights() {
         JSONObject obj = new JSONObject();
         obj.put("destinationplace", "lond");
@@ -68,19 +70,20 @@ public class FlightResourceTest {
         obj.put("outbounddate", "2020-05");
         obj.put("inbounddate", "2020-05");
 
-        //FlightDTO result
-        JSONObject result
+        FlightDTO result
+        //JSONObject result
                 = with()
                         .body(obj) //include object in body
                         .contentType("application/json")
-                        .when().request("POST", "/hotel/searchlist").then() //post REQUEST
+                        .when().request("POST", "/flight/list").then() //post REQUEST
                         .assertThat()
                         .statusCode(HttpStatus.OK_200.getStatusCode())
                         .extract()
-                        .as(JSONObject.class); //extract result JSON as object
+                        .as(FlightDTO.class); //extract result JSON as object
 
         //checking that nothing has changed that we don't want to change
-        System.out.println(result);
+        System.out.println(result.getCarriers().get(1).getCarrierId());
+        assertNotNull(result);
     }
     
     

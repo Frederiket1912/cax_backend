@@ -1,7 +1,4 @@
-
 package dtos.hoteldto;
-
-
 
 public class HotelDTO {
     private DataDTO data;

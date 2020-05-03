@@ -3,7 +3,7 @@ package dtos.planedto;
 import java.util.ArrayList;
 
 
-class InboundDatesDTO {
+public class InboundDatesDTO {
     int Price;
     ArrayList<Integer> QuoteIds;
 

@@ -1,6 +1,6 @@
 package dtos.hoteldto;
 
-class AddressDTO {
+public class AddressDTO {
     String streetAddress;
     String locality;
     String postalCode;

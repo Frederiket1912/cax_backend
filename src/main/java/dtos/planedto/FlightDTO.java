@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import utils.HttpUtils;
 
-
 public class FlightDTO {
     DatesDTO Dates;
     ArrayList<QuotesDTO> Quotes;

@@ -1,7 +1,7 @@
 package dtos.hoteldto;
 
 
-class BodyDTO {
+public class BodyDTO {
     SearchResultsDTO searchResults;
 
     public BodyDTO() {

@@ -1,6 +1,6 @@
 package dtos.planedto;
 
-class PlacesDTO {
+public class PlacesDTO {
 
     int PlaceId;
     String IataCode;

@@ -1,7 +1,7 @@
 package dtos.planedto;
 
 
-class CarriersDTO {
+public class CarriersDTO {
     int CarrierId;
     String Name;
 

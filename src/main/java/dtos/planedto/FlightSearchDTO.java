@@ -16,7 +16,7 @@ public class FlightSearchDTO {
 
     public FlightSearchDTO(String destinationplace, String originplace, String outbounddate, String inbounddate) {
         this.destinationplace = destinationplace;
-        this.originplace = originplace ;
+        this.originplace = originplace;
         this.outbounddate = outbounddate;
         this.inbounddate = inbounddate;
     }
@@ -84,12 +84,10 @@ public class FlightSearchDTO {
     public void setInbounddate(String inbounddate) {
         this.inbounddate = inbounddate;
     }
-    
-    
 
     @Override
     public String toString() {
-        return starturl + country + currency + locale + destinationplace + "/" + originplace + "/" +outbounddate + "/" + inbounddate;
+        return starturl + country + currency + locale + destinationplace + "/" + originplace + "/" + outbounddate + "/" + inbounddate;
     }
 
 }

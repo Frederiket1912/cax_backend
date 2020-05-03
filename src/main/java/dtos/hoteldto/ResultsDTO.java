@@ -1,6 +1,6 @@
 package dtos.hoteldto;
 
-class ResultsDTO {
+public class ResultsDTO {
     String id;
     String name;
     String thumbnailUrl;

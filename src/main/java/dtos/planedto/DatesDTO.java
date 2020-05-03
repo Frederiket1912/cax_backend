@@ -3,7 +3,7 @@ package dtos.planedto;
 import java.util.ArrayList;
 
 
-class DatesDTO {
+public class DatesDTO {
     ArrayList<OutboundDatesDTO> OutboundDates;
     ArrayList<InboundDatesDTO> InboundDates; 
 
