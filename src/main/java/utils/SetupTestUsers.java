@@ -1,8 +1,11 @@
 package utils;
 
 
+import entities.ListItem;
+import entities.Order;
 import entities.Role;
 import entities.User;
+import java.util.ArrayList;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -26,6 +29,17 @@ public class SetupTestUsers {
 
     if(admin.getUserPass().equals("test")||user.getUserPass().equals("test")||both.getUserPass().equals("test"))
       throw new UnsupportedOperationException("You have not changed the passwords");
+    
+    ArrayList<ListItem> order = new ArrayList<>();
+         order.add(new ListItem("Plane", "09-22-2020", "23-32-2313", 100, 2));
+         order.add(new ListItem("Plane", "09-22-2020", "23-32-2313", 100, 2));
+         order.add(new ListItem("Plane", "09-22-2020", "23-32-2313", 100, 2));
+         order.add(new ListItem("Plane", "09-22-2020", "23-32-2313", 100, 2));
+         order.add(new ListItem("Plane", "09-22-2020", "23-32-2313", 100, 2));
+         
+         Order order2 = new Order(order);
+         
+    user.addOrder(order2);
 
     em.getTransaction().begin();
     Role userRole = new Role("user");
