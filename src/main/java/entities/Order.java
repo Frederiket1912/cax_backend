@@ -32,7 +32,7 @@ public class Order implements Serializable {
         return listitems;
     }
     
-    public Order(ArrayList<ListItem> listitems) {
+    public Order(List<ListItem> listitems) {
         this.listitems = listitems;
     }
     
