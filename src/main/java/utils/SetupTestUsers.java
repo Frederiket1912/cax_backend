@@ -31,11 +31,11 @@ public class SetupTestUsers {
       throw new UnsupportedOperationException("You have not changed the passwords");
     
     ArrayList<ListItem> order = new ArrayList<>();
-         order.add(new ListItem("Plane", "09-22-2020", "23-32-2313", 100, 2));
-         order.add(new ListItem("Plane", "09-22-2020", "23-32-2313", 100, 2));
-         order.add(new ListItem("Plane", "09-22-2020", "23-32-2313", 100, 2));
-         order.add(new ListItem("Plane", "09-22-2020", "23-32-2313", 100, 2));
-         order.add(new ListItem("Plane", "09-22-2020", "23-32-2313", 100, 2));
+         order.add(new ListItem("Plane","London-Paris", "09-22-2020", "23-32-2313", 100, 2));
+         order.add(new ListItem("Plane","London-Paris", "09-22-2020", "23-32-2313", 100, 2));
+         order.add(new ListItem("Plane","London-Paris", "09-22-2020", "23-32-2313", 100, 2));
+         order.add(new ListItem("Plane","London-Paris", "09-22-2020", "23-32-2313", 100, 2));
+         order.add(new ListItem("Plane","London-Paris", "09-22-2020", "23-32-2313", 100, 2));
          
          Order order2 = new Order(order);
          

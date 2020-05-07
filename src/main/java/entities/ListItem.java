@@ -17,6 +17,7 @@ public class ListItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String service;
+    private String name;
     private String dateIn;
     private String dateOut;
     private int price;
@@ -25,12 +26,21 @@ public class ListItem implements Serializable {
     public ListItem() {
     }
 
-    public ListItem(String service, String dateIn, String dateOut, int price, int adults) {
+    public ListItem(String service, String name, String dateIn, String dateOut, int price, int adults) {
         this.service = service;
+        this.name = name;
         this.dateIn = dateIn;
         this.dateOut = dateOut;
         this.price = price;
         this.adults = adults;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getService() {
