@@ -79,6 +79,6 @@ public class DemoResource {
         String thisuser = securityContext.getUserPrincipal().getName();
         return "{\"msg\": \"Hello to (admin) User: " + thisuser + "\"}";
     }
-
+    
     
 }

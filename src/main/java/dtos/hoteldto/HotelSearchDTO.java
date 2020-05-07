@@ -10,7 +10,7 @@ public class HotelSearchDTO {
     String pageNumber = "pageNumber=1&";
     String checkIn;
     String checkOut;
-    String pageSize = "&pageSize=25";
+    String pageSize = "&pageSize=30";
     String adults1;
 
     public HotelSearchDTO() {
