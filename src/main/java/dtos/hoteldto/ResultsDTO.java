@@ -7,17 +7,18 @@ public class ResultsDTO {
     String starRating;
     AddressDTO address;
     String supplierHotelId;
+    RatePlanDTO ratePlan;
 
     public ResultsDTO() {
     }
 
-    public ResultsDTO(String id, String name, String thumbnailUrl, String starRating, AddressDTO address, String supplierHotelId) {
-        this.id = id;
+    public ResultsDTO(String name, String thumbnailUrl, String starRating, AddressDTO address, String supplierHotelId, RatePlanDTO ratePlan) {
         this.name = name;
         this.thumbnailUrl = thumbnailUrl;
         this.starRating = starRating;
         this.address = address;
         this.supplierHotelId = supplierHotelId;
+        this.ratePlan = ratePlan;
     }
 
     public String getId() {
