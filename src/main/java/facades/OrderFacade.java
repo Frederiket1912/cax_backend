@@ -28,7 +28,7 @@ public class OrderFacade {
      * @param _emf
      * @return the instance of this facade.
      */
-    public static OrderFacade getUserFacade (EntityManagerFactory _emf) {
+    public static OrderFacade getOrderFacade (EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
             instance = new OrderFacade();

@@ -5,10 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 
 @Entity
+@NamedQuery(name = "ListItem.deleteAllRows", query = "DELETE from ListItem")
 @Table(name = "listitems")
 public class ListItem implements Serializable {
 

@@ -31,7 +31,7 @@ public class OrderResource {
 
     private static EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final OrderFacade FACADE = OrderFacade.getUserFacade(EMF);
+    private static final OrderFacade FACADE = OrderFacade.getOrderFacade(EMF);
 
     
 

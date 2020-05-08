@@ -9,11 +9,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
 @Entity
+@NamedQuery(name = "Order.deleteAllRows", query = "DELETE from Order")
 @Table(name = "orders")
 public class Order implements Serializable {
 
