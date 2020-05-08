@@ -46,6 +46,20 @@ public class OrderResource {
             throw new WebApplicationException(ex.getMessage(), 400);
         }
     }
+    
+    @GET
+    @Path("get/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getOrdersFromUser(@PathParam("username") String username){
+        return GSON.toJson(FACADE.getOrdersFromUser(username));
+    }
+    
+    @GET
+    @Path("get")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getAllOrders(){
+        return GSON.toJson(FACADE.getAllOrders());
+    }
 
 
     
