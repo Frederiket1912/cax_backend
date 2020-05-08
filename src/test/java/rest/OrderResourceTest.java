@@ -2,18 +2,17 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dtos.hoteldto.HotelDTO;
-import dtos.hoteldto.HotelSearchDTO;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import dtos.orderdto.CreateOrderDTO;
-import dtos.planedto.CarriersDTO;
-import dtos.planedto.FlightDTO;
 import entities.ListItem;
 import entities.Order;
 import entities.Role;
 import entities.User;
+import errorhandling.AlreadyExistsException;
 import facades.OrderFacade;
 import io.restassured.RestAssured;
-import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.with;
 import io.restassured.parsing.Parser;
 import java.net.URI;
@@ -21,14 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.core.UriBuilder;
 import jdk.nashorn.internal.ir.annotations.Ignore;
-import net.minidev.json.JSONObject;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -82,7 +80,7 @@ public class OrderResourceTest {
 
             u1.addRole(r1);
             u2.addRole(r2);
-            
+                        
             em.persist(r1);
             em.persist(r2);
             
@@ -115,6 +113,7 @@ public class OrderResourceTest {
         listitems.add(new ListItem("hotel", "Bowery Grand Hotel", "2020-05-08", "2020-08-18", 2525, 15));
         cOrderDTO.setUsername("user1");
         cOrderDTO.setListItems(listitems);
+        
          
 
         CreateOrderDTO result
@@ -130,6 +129,34 @@ public class OrderResourceTest {
         //checking that nothing has changed that we don't want to change
         System.out.println(result.getListItems().get(1).getName());
         assertEquals("France-Germany", result.getListItems().get(1).getName());
+        assertNotNull(result);
+    }
+    
+    @Test
+    public void testCancelOrder() throws AlreadyExistsException {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        CreateOrderDTO cOrderDTO = new CreateOrderDTO();        
+        Order order = new Order();
+        int id;
+            EntityManager em = emf.createEntityManager();
+            em.getTransaction().begin();
+            TypedQuery<Order> q = em.createQuery("SELECT o FROM Order o", Order.class);
+            Order returnorder = q.getSingleResult();
+            id = returnorder.getId();
+            em.getTransaction().commit();
+        
+                
+        Order result
+                = with()
+                        .contentType("application/json")
+                        .when().request("DELETE", "/order/delete/"+id).then() //post REQUEST
+                        .assertThat()
+                        .statusCode(HttpStatus.OK_200.getStatusCode())
+                        .extract()
+                        .as(Order.class); //extract result JSON as object
+
+        //checking that nothing has changed that we don't want to change
+        assertEquals(true, result.getCancelled());
         assertNotNull(result);
     }
     
