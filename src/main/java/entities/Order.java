@@ -1,7 +1,6 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 
 @Entity
 @NamedQuery(name = "Order.deleteAllRows", query = "DELETE from Order")
@@ -26,6 +24,8 @@ public class Order implements Serializable {
     private int id;
     @OneToMany (cascade = CascadeType.PERSIST)
     private List<ListItem> listitems;
+    @Column(name = "cancelled")
+    private Boolean cancelled = Boolean.FALSE;
     
     public Order() {
     }
@@ -33,7 +33,11 @@ public class Order implements Serializable {
     public List<ListItem> getListitems() {
         return listitems;
     }
-    
+
+    public void setListitems(List<ListItem> listitems) {
+        this.listitems = listitems;
+    }
+
     public Order(List<ListItem> listitems) {
         this.listitems = listitems;
     }
@@ -42,8 +46,25 @@ public class Order implements Serializable {
         return id;
     }
 
+    public Boolean getCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(Boolean cancelled) {
+        this.cancelled = cancelled;
+    }
+    
+    
+
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" + "id=" + id + ", listitems=" + listitems + ", cancelled=" + cancelled + '}';
+    }
+    
+    
     
 }
