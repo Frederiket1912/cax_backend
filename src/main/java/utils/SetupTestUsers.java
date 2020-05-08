@@ -30,7 +30,7 @@ public class SetupTestUsers {
     if(admin.getUserPass().equals("test")||user.getUserPass().equals("test")||both.getUserPass().equals("test"))
       throw new UnsupportedOperationException("You have not changed the passwords");
     
-    /*ArrayList<ListItem> order = new ArrayList<>();
+    ArrayList<ListItem> order = new ArrayList<>();
          order.add(new ListItem("Plane","London-Paris", "09-22-2020", "23-32-2313", 100, 2));
          order.add(new ListItem("Plane","London-Paris", "09-22-2020", "23-32-2313", 100, 2));
          order.add(new ListItem("Plane","London-Paris", "09-22-2020", "23-32-2313", 100, 2));
@@ -38,8 +38,10 @@ public class SetupTestUsers {
          order.add(new ListItem("Plane","London-Paris", "09-22-2020", "23-32-2313", 100, 2));
          
          Order order2 = new Order(order);
+         Order order3 = new Order(order);
          
-    user.addOrder(order2);*/
+    user.addOrder(order2);
+    user.addOrder(order3);
 
     em.getTransaction().begin();
     Role userRole = new Role("user");

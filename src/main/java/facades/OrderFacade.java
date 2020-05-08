@@ -66,11 +66,7 @@ public class OrderFacade {
             List<CheckOrderDTO> result = new ArrayList<>();
             
             for (Order o : orders) {
-                List<ListItemDTO> listdto = new ArrayList<>();
-                for (ListItem li : o.getListitems()) {
-                    listdto.add(new ListItemDTO(li));
-                }
-                result.add(new CheckOrderDTO(username, listdto));
+                result.add(new CheckOrderDTO(username, o));
             }
             return result;
         } finally {
@@ -84,13 +80,9 @@ public class OrderFacade {
             TypedQuery<User> q = em.createQuery("SELECT u FROM User u", User.class);
             List<User> users = q.getResultList();
             List<CheckOrderDTO> result = new ArrayList<>();
-            List<ListItemDTO> listdto = new ArrayList<>();
             for (User u : users) {
                 for (Order o : u.getOrders()) {
-                    for (ListItem li : o.getListitems()) {
-                    listdto.add(new ListItemDTO(li));                   
-                }
-                    result.add(new CheckOrderDTO(u.getUserName(), listdto));
+                    result.add(new CheckOrderDTO(u.getUserName(), o));
                 }
             }
             return result;
