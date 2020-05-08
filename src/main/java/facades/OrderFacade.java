@@ -15,6 +15,7 @@ import javax.persistence.EntityManagerFactory;
 import errorhandling.AuthenticationException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import utils.EMF_Creator;
 
@@ -39,19 +40,6 @@ public class OrderFacade {
         return instance;
     }
     
-    public User getVeryfiedUser(String username, String password) throws AuthenticationException {
-        EntityManager em = emf.createEntityManager();
-        User user;
-        try {
-            user = em.find(User.class, username);
-            if (user == null || !user.verifyPassword(password)) {
-                throw new AuthenticationException("Invalid user name or password");
-            }
-        } finally {
-            em.close();
-        }
-        return user;
-    }
     
     public CreateOrderDTO createOrder(CreateOrderDTO orderDTO) throws AlreadyExistsException {
         EntityManager em = emf.createEntityManager();
@@ -110,17 +98,35 @@ public class OrderFacade {
             em.close();
         }
     }
+
+    public Order deleteOrder(String id) {
+        EntityManager em = emf.createEntityManager();
+        Order order = new Order();
+        try {
+            em.getTransaction().begin();
+            order = em.find(Order.class, Integer.parseInt(id));
+            order.setCancelled(Boolean.TRUE);
+            
+            em.persist(order);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return order;
+    }
     
-
-
-     public static void main(String[] args) throws AlreadyExistsException {
-         CreateOrderDTO orderDTO = new CreateOrderDTO();
+         public static void main(String[] args) throws AlreadyExistsException {
+         /*CreateOrderDTO orderDTO = new CreateOrderDTO();
          ArrayList<ListItem> list = new ArrayList();
          String username = "username";
          orderDTO.setListItems(list);
          orderDTO.setUsername(username);
          Gson gson = new GsonBuilder().setPrettyPrinting().create();
          
-         System.out.println(gson.toJson(orderDTO));
+         System.out.println(gson.toJson(orderDTO));*/
+         emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
+         OrderFacade of = new OrderFacade();
+         
+             System.out.println(of.deleteOrder("1"));
     }
 }

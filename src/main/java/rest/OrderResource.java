@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -39,12 +40,19 @@ public class OrderResource {
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String createUser(CreateOrderDTO order) {
+    public String createOrder(CreateOrderDTO order) {
        try {
             return GSON.toJson(FACADE.createOrder(order));
         } catch (AlreadyExistsException ex) {
             throw new WebApplicationException(ex.getMessage(), 400);
         }
+    }
+    
+    @DELETE
+    @Path("/delete/{orderid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteOrder(@PathParam("orderid") String orderid) {
+            return GSON.toJson(FACADE.deleteOrder(orderid));
     }
 
 

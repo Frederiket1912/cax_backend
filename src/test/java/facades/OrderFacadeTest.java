@@ -139,5 +139,18 @@ public class OrderFacadeTest {
     public void testGetAllOrders() {
         assertEquals(3, facade.getAllOrders().size());
     }
-    
+
+
+    /**
+     * Test of deleteOrder method, of class OrderFacade.
+     */
+    @Test
+    public void testDeleteOrder() {
+        Order order1 = facade.deleteOrder("1");
+        Order order2 = facade.deleteOrder("2");
+       Order order3 = facade.deleteOrder("3");
+        assertEquals(true, order1.getCancelled());
+    }
+
+
 }
