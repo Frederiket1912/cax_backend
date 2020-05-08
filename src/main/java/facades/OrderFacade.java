@@ -2,6 +2,8 @@ package facades;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.listitemdto.ListItemDTO;
+import dtos.orderdto.CheckOrderDTO;
 import dtos.orderdto.CreateOrderDTO;
 import entities.ListItem;
 import entities.Order;
@@ -13,6 +15,7 @@ import javax.persistence.EntityManagerFactory;
 import errorhandling.AuthenticationException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.TypedQuery;
 import utils.EMF_Creator;
 
 
@@ -67,6 +70,48 @@ public class OrderFacade {
             em.close();
         }
         return orderDTO;
+    }
+    
+    public List<CheckOrderDTO> getOrdersFromUser(String username){
+         EntityManager em = emf.createEntityManager();
+        try {          
+            User u = em.find(User.class, username);
+            List<Order> orders = u.getOrders();
+
+            List<CheckOrderDTO> result = new ArrayList<>();
+            
+            for (Order o : orders) {
+                List<ListItemDTO> lidtos = new ArrayList<>();
+                for (ListItem li : o.getListitems()) {
+                    lidtos.add(new ListItemDTO(li));
+                }
+                result.add(new CheckOrderDTO(username, lidtos));
+            }
+            return result;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<CheckOrderDTO> getAllOrders() {
+        EntityManager em = emf.createEntityManager();
+        try {          
+            TypedQuery<User> q = em.createQuery("SELECT u FROM User u", User.class);
+            List<User> users = q.getResultList();
+            List<CheckOrderDTO> result = new ArrayList<>();
+            List<ListItemDTO> lidtos = new ArrayList<>();
+            for (User u : users) {
+                for (Order o : u.getOrders()) {
+                    for (ListItem li : o.getListitems()) {
+                    lidtos.add(new ListItemDTO(li));                   
+                }
+                    result.add(new CheckOrderDTO(u.getUserName(), lidtos));
+                }
+            }
+            return result;
+        } finally {
+            em.close();
+        }
     }
     
 
