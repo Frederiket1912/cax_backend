@@ -28,6 +28,10 @@ public class OrderFacadeTest {
     private Role r1, r2;
     private ListItem l1, l2, l3;
     private Order o1, o2, o3;
+    private List<ListItem> listitems1 = new ArrayList();
+    private List<ListItem> listitems2 = new ArrayList();
+    private List<ListItem> listitems3 = new ArrayList();;
+    
     
     public OrderFacadeTest() {
     }
@@ -73,14 +77,14 @@ public class OrderFacadeTest {
             l2 = new ListItem("hotel", "test2", "11-11-1000", "22-22-2000", 200, 3);
             l3 = new ListItem("hotel", "test3", "12-12-1000", "23-23-2000", 300, 4);
             
-            List<ListItem> listitems1 = new ArrayList<>();
+            //List<ListItem> listitems1 = new ArrayList<>();
             listitems1.add(l1);
             listitems1.add(l2);
             
-            List<ListItem> listitems2 = new ArrayList<>();
+            //List<ListItem> listitems2 = new ArrayList<>();
             listitems2.add(l3);
             
-            List<ListItem> listitems3 = new ArrayList<>();
+            //List<ListItem> listitems3 = new ArrayList<>();
             listitems3.add(l3);
             listitems3.add(l2);
             
@@ -111,16 +115,13 @@ public class OrderFacadeTest {
     /**
      * Test of createOrder method, of class OrderFacade.
      */
-    //@Test
+    @Test
     public void testCreateOrder() throws Exception {
-        System.out.println("createOrder");
-        CreateOrderDTO orderDTO = null;
-        OrderFacade instance = null;
-        CreateOrderDTO expResult = null;
-        CreateOrderDTO result = instance.createOrder(orderDTO);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        CreateOrderDTO orderDTO = new CreateOrderDTO();
+        orderDTO.setUsername(u1.getUserName());
+        orderDTO.setListItems(listitems1);
+        assertEquals(listitems1, facade.createOrder(orderDTO).getListItems());
+        assertEquals(u1.getUserName(), facade.createOrder(orderDTO).getUsername());
     }
 
     /**

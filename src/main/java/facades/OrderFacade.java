@@ -56,9 +56,6 @@ public class OrderFacade {
     public CreateOrderDTO createOrder(CreateOrderDTO orderDTO) throws AlreadyExistsException {
         EntityManager em = emf.createEntityManager();
         Order order = new Order(orderDTO.getListItems());
-            //User user = new User();
-            //user.setUserName(orderDTO.getUsername());
-            //user.addOrder(order);
         try {
             em.getTransaction().begin();
             
@@ -81,11 +78,11 @@ public class OrderFacade {
             List<CheckOrderDTO> result = new ArrayList<>();
             
             for (Order o : orders) {
-                List<ListItemDTO> lidtos = new ArrayList<>();
+                List<ListItemDTO> listdto = new ArrayList<>();
                 for (ListItem li : o.getListitems()) {
-                    lidtos.add(new ListItemDTO(li));
+                    listdto.add(new ListItemDTO(li));
                 }
-                result.add(new CheckOrderDTO(username, lidtos));
+                result.add(new CheckOrderDTO(username, listdto));
             }
             return result;
         } finally {
@@ -99,13 +96,13 @@ public class OrderFacade {
             TypedQuery<User> q = em.createQuery("SELECT u FROM User u", User.class);
             List<User> users = q.getResultList();
             List<CheckOrderDTO> result = new ArrayList<>();
-            List<ListItemDTO> lidtos = new ArrayList<>();
+            List<ListItemDTO> listdto = new ArrayList<>();
             for (User u : users) {
                 for (Order o : u.getOrders()) {
                     for (ListItem li : o.getListitems()) {
-                    lidtos.add(new ListItemDTO(li));                   
+                    listdto.add(new ListItemDTO(li));                   
                 }
-                    result.add(new CheckOrderDTO(u.getUserName(), lidtos));
+                    result.add(new CheckOrderDTO(u.getUserName(), listdto));
                 }
             }
             return result;
