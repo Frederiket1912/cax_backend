@@ -51,27 +51,16 @@ public class RegistrationResource {
     }
 
     @POST
-    @Path("/admin/{username}/{password}")
+    @Path("/admin/{username}/{password}/{role}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("admin")
-    public String createAdmin(@PathParam("username") String username, @PathParam("password") String password) {
+    public String createAdmin(@PathParam("username") String username, @PathParam("password") String password, @PathParam("role") String role) {
         try {
-            return GSON.toJson(FACADE.createAdminUser(username, password));
+            return GSON.toJson(FACADE.adminCreateUser(username, password, role));
         } catch (AlreadyExistsException ex) {
             throw new WebApplicationException(ex.getMessage(), 400);
         }
     }
     
-    @POST
-    @Path("/support/{username}/{password}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("admin")
-    public String createSupporter(@PathParam("username") String username, @PathParam("password") String password) {
-        try {
-            return GSON.toJson(FACADE.createSupportUser(username, password));
-        } catch (AlreadyExistsException ex) {
-            throw new WebApplicationException(ex.getMessage(), 400);
-        }
-    }
     
 }

@@ -62,10 +62,10 @@ public class UserFacade {
         return userregister;
     }
     
-    public User createAdminUser(String username, String password) throws AlreadyExistsException {
+    public User adminCreateUser(String username, String password, String role) throws AlreadyExistsException {
         EntityManager em = emf.createEntityManager();
         User userregister = new User(username, password);
-        Role userRole = new Role("admin");
+        Role userRole = new Role(role);
         userregister.addRole(userRole);
         try {
             User user = em.find(User.class, username);
@@ -81,30 +81,10 @@ public class UserFacade {
         return userregister;
     }
     
-    public User createSupportUser(String username, String password) throws AlreadyExistsException {
-        EntityManager em = emf.createEntityManager();
-        User userregister = new User(username, password);
-        Role userAdmin = new Role("user");
-        Role userUser = new Role("admin");
-        userregister.addRole(userAdmin);
-        userregister.addRole(userUser);
-        try {
-            User user = em.find(User.class, username);
-            if (user != null ) {
-                throw new AlreadyExistsException("User name already exists");
-            }
-            em.getTransaction().begin();
-            em.persist(userregister);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-        return userregister;
-    }
 
      public static void main(String[] args) throws AlreadyExistsException {
          emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
         UserFacade UF = new UserFacade();
-         System.out.println(UF.createSupportUser("testsupport", "test2020"));
+         //System.out.println(UF.createSupportUser("testsupport", "test2020"));
     }
 }
