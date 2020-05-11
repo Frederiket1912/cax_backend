@@ -2,6 +2,7 @@ package facades;
 
 import dtos.orderdto.CheckOrderDTO;
 import dtos.orderdto.CreateOrderDTO;
+import entities.DiscountCode;
 import entities.ListItem;
 import entities.Order;
 import entities.Role;
@@ -54,7 +55,12 @@ public class OrderFacadeTest {
             em.createNamedQuery("User.deleteAllRows").executeUpdate();
             em.createNamedQuery("Order.deleteAllRows").executeUpdate();
             em.createNamedQuery("ListItem.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Role.deleteAllRows").executeUpdate();          
+            em.createNamedQuery("Role.deleteAllRows").executeUpdate();
+            em.createNamedQuery("DiscountCode.deleteAllRows").executeUpdate();
+            
+            DiscountCode dc1 = new DiscountCode("Default", 0, 1000);
+            em.persist(dc1);
+            
 
             u1 = new User("test1", "test1");
             u2 = new User("test2", "test2");
@@ -91,6 +97,10 @@ public class OrderFacadeTest {
             o1 = new Order(listitems1);
             o2 = new Order(listitems2);
             o3 = new Order(listitems3);
+            
+            o1.setDiscountCode(dc1);
+            o2.setDiscountCode(dc1);
+            o3.setDiscountCode(dc1);
             
             u1 = em.find(User.class, u1.getUserName());
             u2 = em.find(User.class, u2.getUserName());

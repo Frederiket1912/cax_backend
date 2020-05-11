@@ -1,5 +1,6 @@
 package dtos.orderdto;
 
+import entities.DiscountCode;
 import entities.ListItem;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,13 +9,15 @@ public class CreateOrderDTO {
 
     String username;
     List<ListItem> listItems;
+    DiscountCodeDTO discountCode;
 
     public CreateOrderDTO() {
     }
 
-    public CreateOrderDTO(String username, List<ListItem> listItems) {
+    public CreateOrderDTO(String username, List<ListItem> listItems, DiscountCodeDTO discountCode) {
         this.username = username;
         this.listItems = listItems;
+        this.discountCode = discountCode;
     }
 
     public String getUsername() {

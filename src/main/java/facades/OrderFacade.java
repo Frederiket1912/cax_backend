@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import dtos.listitemdto.ListItemDTO;
 import dtos.orderdto.CheckOrderDTO;
 import dtos.orderdto.CreateOrderDTO;
+import dtos.orderdto.DiscountCodeDTO;
+import entities.DiscountCode;
 import entities.ListItem;
 import entities.Order;
 import entities.Role;
@@ -13,9 +15,13 @@ import errorhandling.AlreadyExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import errorhandling.AuthenticationException;
+import errorhandling.NotFoundException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.RollbackException;
 import javax.persistence.TypedQuery;
 import utils.EMF_Creator;
 
@@ -107,7 +113,52 @@ public class OrderFacade {
         return order;
     }
     
-         public static void main(String[] args) throws AlreadyExistsException {
+    public DiscountCodeDTO createDiscountCode(String name, int discountPercentage, int code) throws AlreadyExistsException{
+        EntityManager em = emf.createEntityManager();
+        DiscountCode dc = new DiscountCode(name, discountPercentage, code);
+        try {
+            em.getTransaction().begin();            
+            em.persist(dc);
+            em.getTransaction().commit();
+        }catch(RollbackException ex){
+            throw new AlreadyExistsException("Discount code with given code already exists");
+        }finally {
+            em.close();
+        }
+        return new DiscountCodeDTO(dc);
+    }
+    
+    public DiscountCodeDTO getDiscountCodeByID(int id) throws NotFoundException{
+        EntityManager em = emf.createEntityManager();
+        try {          
+            DiscountCode dc = em.find(DiscountCode.class, id);
+            if (null == dc) throw new NotFoundException("Discount code with given id could not be found.");
+            return new DiscountCodeDTO(dc);
+        } finally {
+            em.close();
+        }     
+    }
+    
+    public DiscountCodeDTO getDiscountCodeByCode(int code) throws NotFoundException{
+         EntityManager em = emf.createEntityManager();
+        try {          
+            TypedQuery<DiscountCode> q = em.createQuery("SELECT d FROM DiscountCode d WHERE "
+                    + "d.code = :code", DiscountCode.class)
+                    .setParameter("code", code);
+
+            DiscountCode dc = q.getSingleResult();
+            DiscountCodeDTO result = new DiscountCodeDTO(dc);
+            return result;
+        }catch(NoResultException ex){
+            throw new NotFoundException("No discount code with give code found.");
+        }finally {
+            em.close();
+        }
+    }
+    
+    
+    
+         public static void main(String[] args) throws AlreadyExistsException, NotFoundException {
          /*CreateOrderDTO orderDTO = new CreateOrderDTO();
          ArrayList<ListItem> list = new ArrayList();
          String username = "username";
@@ -119,6 +170,6 @@ public class OrderFacade {
          emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
          OrderFacade of = new OrderFacade();
          
-             System.out.println(of.deleteOrder("1"));
+             System.out.println(of.createDiscountCode("test", 10, 1111));
     }
 }

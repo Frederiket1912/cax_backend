@@ -1,6 +1,7 @@
 package utils;
 
 
+import entities.DiscountCode;
 import entities.ListItem;
 import entities.Order;
 import entities.Role;
@@ -31,19 +32,27 @@ public class SetupTestUsers {
       throw new UnsupportedOperationException("You have not changed the passwords");
     
     ArrayList<ListItem> order = new ArrayList<>();
-         order.add(new ListItem("Plane","London-Paris", "09-22-2020", "23-32-2313", 100, 2));
-         order.add(new ListItem("Plane","London-Paris", "09-22-2020", "23-32-2313", 100, 2));
-         order.add(new ListItem("Plane","London-Paris", "09-22-2020", "23-32-2313", 100, 2));
-         order.add(new ListItem("Plane","London-Paris", "09-22-2020", "23-32-2313", 100, 2));
-         order.add(new ListItem("Plane","London-Paris", "09-22-2020", "23-32-2313", 100, 2));
+         order.add(new ListItem("Plane","London-Paris", "2020-05-15", "2020-05-25", 100, 2));
+         order.add(new ListItem("Plane","London-Paris", "02020-05-15", "2020-05-25", 100, 2));
+         order.add(new ListItem("Plane","London-Paris", "2020-05-15", "2020-05-25", 100, 2));
+         order.add(new ListItem("Plane","London-Paris", "2020-05-15", "2020-05-25", 100, 2));
+         order.add(new ListItem("Plane","London-Paris", "2020-05-15", "2020-05-25", 100, 2));
          
          Order order2 = new Order(order);
          Order order3 = new Order(order);
          
     user.addOrder(order2);
     user.addOrder(order3);
+    
+    DiscountCode dc = new DiscountCode("20 percent", 20, 2222);
+    DiscountCode dc2 = new DiscountCode("10 percent", 10, 1111);
+    order2.setDiscountCode(dc);
+    order3.setDiscountCode(dc2);
+    
 
     em.getTransaction().begin();
+    em.persist(dc);
+    em.persist(dc2);
     Role userRole = new Role("user");
     Role adminRole = new Role("admin");
     user.addRole(userRole);

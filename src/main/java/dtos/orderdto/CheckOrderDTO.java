@@ -12,6 +12,7 @@ public class CheckOrderDTO {
     private List<ListItemDTO> listitems = new ArrayList<>();
     private boolean cancelled;
     private int id;
+    private DiscountCodeDTO discountcode;
 
     public CheckOrderDTO(String username, Order order) {
         this.username = username;
@@ -20,7 +21,9 @@ public class CheckOrderDTO {
         }
         this.cancelled = order.getCancelled();
         this.id = order.getId();
-
+        if (null != order.getDiscountCode()){
+        this.discountcode = new DiscountCodeDTO(order.getDiscountCode());
+        }
     }
 
     public String getUsername() {
@@ -37,6 +40,30 @@ public class CheckOrderDTO {
 
     public void setListitems(List<ListItemDTO> listitems) {
         this.listitems = listitems;
+    }
+
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public DiscountCodeDTO getDiscountcode() {
+        return discountcode;
+    }
+
+    public void setDiscountcode(DiscountCodeDTO discountcode) {
+        this.discountcode = discountcode;
     }
 
 }

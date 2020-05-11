@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -26,6 +27,8 @@ public class Order implements Serializable {
     private List<ListItem> listitems;
     @Column(name = "cancelled")
     private Boolean cancelled = Boolean.FALSE;
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    private DiscountCode discountCode;
     
     public Order() {
     }
@@ -38,8 +41,21 @@ public class Order implements Serializable {
         this.listitems = listitems;
     }
 
+    public Order(List<ListItem> listitems, DiscountCode discountCode) {
+        this.listitems = listitems;
+        this.discountCode = discountCode;
+    }
+
     public Order(List<ListItem> listitems) {
         this.listitems = listitems;
+    }
+
+    public DiscountCode getDiscountCode() {
+        return discountCode;
+    }
+
+    public void setDiscountCode(DiscountCode discountCode) {
+        this.discountCode = discountCode;
     }
     
     public int getId() {
@@ -62,8 +78,10 @@ public class Order implements Serializable {
 
     @Override
     public String toString() {
-        return "Order{" + "id=" + id + ", listitems=" + listitems + ", cancelled=" + cancelled + '}';
+        return "Order{" + "id=" + id + ", listitems=" + listitems + ", cancelled=" + cancelled + ", discountCode=" + discountCode + '}';
     }
+
+    
     
     
     
