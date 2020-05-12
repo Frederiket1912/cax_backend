@@ -50,9 +50,17 @@ public class OrderFacade {
     public CreateOrderDTO createOrder(CreateOrderDTO orderDTO) throws AlreadyExistsException {
         EntityManager em = emf.createEntityManager();
         Order order = new Order(orderDTO.getListItems());
+        
         try {
             em.getTransaction().begin();
-            
+            if (null != orderDTO.getDiscountCode()){
+            TypedQuery<DiscountCode> q = em.createQuery("SELECT d FROM DiscountCode d WHERE "
+                    + "d.code = :code", DiscountCode.class)
+                    .setParameter("code", orderDTO.getDiscountCode().getCode());
+
+            DiscountCode dc = q.getSingleResult();
+            order.setDiscountCode(dc);
+            }
             User user = em.find(User.class, orderDTO.getUsername());
             user.addOrder(order);
             em.persist(user);

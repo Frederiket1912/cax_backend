@@ -35,6 +35,16 @@ public class CreateOrderDTO {
     public void setListItems(List<ListItem> listItems) {
         this.listItems = listItems;
     }
+
+    public DiscountCodeDTO getDiscountCode() {
+        return discountCode;
+    }
+
+    public void setDiscountCode(DiscountCodeDTO discountCode) {
+        this.discountCode = discountCode;
+    }
+    
+    
     
     @Override
     public String toString() {
