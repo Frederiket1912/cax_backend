@@ -55,12 +55,10 @@ public class DiscountCodeDTO {
     public void setCode(int code) {
         this.code = code;
     }
-    
 
     @Override
     public String toString() {
-        return "DiscountCodeDTO{" + "id=" + id + ", name=" + name + ", discountPercentage=" + discountPercentage + '}';
+        return "DiscountCodeDTO{" + "id=" + id + ", name=" + name + ", discountPercentage=" + discountPercentage + ", code=" + code + '}';
     }
-    
     
 }
