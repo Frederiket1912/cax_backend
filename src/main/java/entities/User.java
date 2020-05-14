@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -43,15 +44,30 @@ public class User implements Serializable {
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")})
   @ManyToMany (cascade = {CascadeType.PERSIST})
   private List<Order> orders = new ArrayList();
+  @OneToMany (cascade = {CascadeType.PERSIST})
+  private List<SupportTicket> supportticket = new ArrayList();
   
     public void addOrder(Order order){
         this.orders.add(order);
     }
     
+    public void addTicket(SupportTicket ticket){
+        this.supportticket.add(ticket);
+    }
 
     public List<Order> getOrders() {
         return orders;
     }
+
+    public List<SupportTicket> getSupportticket() {
+        return supportticket;
+    }
+
+    public void setSupportticket(List<SupportTicket> supportticket) {
+        this.supportticket = supportticket;
+    }
+    
+    
 
   public List<String> getRolesAsStrings() {
     if (roleList.isEmpty()) {

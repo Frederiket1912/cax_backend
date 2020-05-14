@@ -2,10 +2,15 @@ package facades;
 
 import dtos.orderdto.CheckOrderDTO;
 import dtos.orderdto.CreateOrderDTO;
+import dtos.supportticketdto.GetSupportTicketDTO;
+import dtos.supportticketdto.ReplySupportTicketDTO;
+import dtos.supportticketdto.SupportTicketDTO;
 import entities.DiscountCode;
 import entities.ListItem;
 import entities.Order;
 import entities.Role;
+import entities.SupportTicket;
+import entities.TicketChain;
 import entities.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +25,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import utils.EMF_Creator;
 
 
-public class OrderFacadeTest {
+public class SupportTicketFacadeTest {
     private static EntityManagerFactory emf;
-    private static OrderFacade facade;
+    private static SupportTicketFacade facade;
     private EntityManager em;
     
     private User u1, u2;
@@ -34,13 +39,13 @@ public class OrderFacadeTest {
     private List<ListItem> listitems3 = new ArrayList();;
     
     
-    public OrderFacadeTest() {
+    public SupportTicketFacadeTest() {
     }
     
     @BeforeAll
     public static void setUpClass() {
         emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.TEST, EMF_Creator.Strategy.DROP_AND_CREATE);
-        facade = OrderFacade.getOrderFacade(emf);
+        facade = SupportTicketFacade.getTicketFacade(emf);
     }
     
     @AfterAll
@@ -108,6 +113,15 @@ public class OrderFacadeTest {
             u1.addOrder(o1);
             u1.addOrder(o2);
             u2.addOrder(o3);
+            
+            List<SupportTicket> t1list = new ArrayList();
+            SupportTicket t1 = new SupportTicket();
+            List<TicketChain> tc1 = new ArrayList();
+            tc1.add(new TicketChain("subject", "comment", "test1"));
+            t1.setTicketchain(tc1);
+            t1list.add(t1);
+            u1.addTicket(t1);
+            
             em.persist(u1);
             em.persist(u2);
             em.getTransaction().commit();
@@ -126,40 +140,60 @@ public class OrderFacadeTest {
      * Test of createOrder method, of class OrderFacade.
      */
     @Test
-    public void testCreateOrder() throws Exception {
-        CreateOrderDTO orderDTO = new CreateOrderDTO();
-        orderDTO.setUsername(u1.getUserName());
-        orderDTO.setListItems(listitems1);
-        assertEquals(listitems1, facade.createOrder(orderDTO).getListItems());
-        assertEquals(u1.getUserName(), facade.createOrder(orderDTO).getUsername());
+    public void createSupportTicket() {
+        SupportTicketDTO dto = new SupportTicketDTO();
+        dto.setUsername("test1");
+        ArrayList<SupportTicket> support = new ArrayList();
+        ArrayList<TicketChain> chain = new ArrayList();
+        chain.add(new TicketChain("Need help with order #155151", "my order says cancelled but I haven't canceled the order", dto.getUsername()));
+        support.add(new SupportTicket(chain));
+        dto.setSupporttickets(support);
+        
+        User user = facade.createSupportTicket(dto);
+        
+        assertNotNull(user.getSupportticket().get(0));
     }
 
-    /**
-     * Test of getOrdersFromUser method, of class OrderFacade.
-     */
+
     @Test
-    public void testGetOrdersFromUser() {
-        assertEquals(2, facade.getOrdersFromUser(u1.getUserName()).size());
+    public void replySupportTicket() {
+        createSupportTicket();
+        
+        ReplySupportTicketDTO dto = new ReplySupportTicketDTO();
+        dto.setSupportid(1);
+        List<TicketChain> supporttickets = new ArrayList();
+        supporttickets.add(new TicketChain("answer : Need help with order #155151", "Ok, I can see this looked like an error on our part. It should be fixed now", "admin"));
+        dto.setSupporttickets(supporttickets);
+        SupportTicket reply = facade.replySupportTicket(dto);
+        
+        assertNotNull(reply.getTicketchain().get(0));
     }
     
-    /**
-     * Test of getAllOrders method, of class OrderFacade.
-     */
+ 
     @Test
-    public void testGetAllOrders() {
-        assertEquals(3, facade.getAllOrders().size());
+    public void closeSupportTicket() {
+        createSupportTicket();
+        
+        SupportTicket ticket = facade.closeSupportTicket(u1.getSupportticket().get(0).getId());
+        
+        assertEquals(ticket.getTicketOpen(), false);
     }
-
-
-    /**
-     * Test of deleteOrder method, of class OrderFacade.
-     */
+    
     @Test
-    public void testDeleteOrder() {
-        Order order1 = facade.deleteOrder(String.valueOf(o1.getId()));
-        Order order2 = facade.deleteOrder(String.valueOf(o2.getId()));
-       Order order3 = facade.deleteOrder(String.valueOf(o3.getId()));
-        assertEquals(true, order1.getCancelled());
+    public void getSupportTicketUser() {
+        createSupportTicket();
+        
+        GetSupportTicketDTO dto = facade.getSupportTicketUser("test1");
+        assertNotNull(dto);
+    }
+    
+    @Test
+    public void getOpenSupportTickets() {
+        createSupportTicket();
+        
+        List<GetSupportTicketDTO> ticketList = facade.getOpenSupportTickets();
+        
+        assertNotNull(ticketList);
     }
 
 

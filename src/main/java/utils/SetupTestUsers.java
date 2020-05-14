@@ -5,8 +5,11 @@ import entities.DiscountCode;
 import entities.ListItem;
 import entities.Order;
 import entities.Role;
+import entities.SupportTicket;
+import entities.TicketChain;
 import entities.User;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -27,6 +30,7 @@ public class SetupTestUsers {
     User user = new User("user", "test123");
     User admin = new User("admin", "test123");
     User both = new User("user_admin", "test123");
+    User support = new User("support", "test123");
 
     if(admin.getUserPass().equals("test")||user.getUserPass().equals("test")||both.getUserPass().equals("test"))
       throw new UnsupportedOperationException("You have not changed the passwords");
@@ -49,21 +53,32 @@ public class SetupTestUsers {
     order2.setDiscountCode(dc);
     order3.setDiscountCode(dc2);
     
+    /*SupportTicket supportticket = new SupportTicket();
+    List<TicketChain> ticketchain = new ArrayList();
+    ticketchain.add(new TicketChain("subject1", "comment1", "user"));
+    ticketchain.add(new TicketChain("subject2", "comment2", "user"));
+    ticketchain.add(new TicketChain("subject3", "comment3", "user"));
+    supportticket.setTicketchain(ticketchain);*/
+    
 
     em.getTransaction().begin();
     em.persist(dc);
     em.persist(dc2);
     Role userRole = new Role("user");
     Role adminRole = new Role("admin");
+    Role supportRole = new Role("support");
     user.addRole(userRole);
     admin.addRole(adminRole);
+    support.addRole(supportRole);
     both.addRole(userRole);
     both.addRole(adminRole);
     em.persist(userRole);
     em.persist(adminRole);
+    em.persist(supportRole);
     em.persist(user);
     em.persist(admin);
     em.persist(both);
+    em.persist(support);
     em.getTransaction().commit();
     System.out.println("PW: " + user.getUserPass());
     System.out.println("Testing user with OK password: " + user.verifyPassword("test"));
