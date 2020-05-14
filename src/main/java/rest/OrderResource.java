@@ -34,6 +34,11 @@ public class OrderResource {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final OrderFacade FACADE = OrderFacade.getOrderFacade(EMF);
 
+    /**
+     * This endpoint is used to create new orders.
+     * @param order
+     * @return JSON object corresponding to a CreateOrderDTO of the created order.
+     */
     @POST
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
@@ -46,6 +51,11 @@ public class OrderResource {
         }
     }
 
+    /**
+     * This endpoint is used to get all orders from a given user.
+     * @param username
+     * @return JSON object corresponding to a list of all orders from the user.
+     */
     @GET
     @Path("get/{username}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -53,6 +63,10 @@ public class OrderResource {
         return GSON.toJson(FACADE.getOrdersFromUser(username));
     }
 
+    /**
+     * This endpoint is used to get a list of all orders in the DB.
+     * @return JSON object corresponding to a list of all orders.
+     */
     @GET
     @Path("get")
     @Produces(MediaType.APPLICATION_JSON)
@@ -60,6 +74,11 @@ public class OrderResource {
         return GSON.toJson(FACADE.getAllOrders());
     }
 
+    /**
+     * This endpoint is used to set an orders status to cancelled. 
+     * @param orderid
+     * @return JSON object corresponding to the cancelled order.
+     */
     @DELETE
     @Path("/delete/{orderid}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -68,6 +87,11 @@ public class OrderResource {
 
     }
 
+    /**
+     * This endpoint is used to fetch a DiscountCode from it's id.
+     * @param id
+     * @return JSON object corresponding to a DiscountCode with the given id.
+     */
     @GET
     @Path("get/discountcode/id/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -79,6 +103,11 @@ public class OrderResource {
         }
     }
 
+    /**
+     * This endpoint is used to fetch a DiscountCode from it's code.
+     * @param code
+     * @return JSON object corresponding to a DiscountCode with the given code.
+     */
     @GET
     @Path("get/discountcode/{code}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -90,6 +119,10 @@ public class OrderResource {
         }
     }
 
+    /**
+     * This endpoint is used to fetch all discount codes.
+     * @return JSON object corresponding to a list of all discount codes.
+     */
     @GET
     @Path("get/discountcode/all")
     @Produces(MediaType.APPLICATION_JSON)
@@ -97,6 +130,12 @@ public class OrderResource {
         return GSON.toJson(FACADE.getAllDiscountCodes());
     }
 
+    /**
+     * This endpoint is used to post a new DiscountCode.
+     * @param discountcode
+     * @return JSON object corresponding to the created DiscountCode.
+     * @throws AlreadyExistsException
+     */
     @POST
     @Path("create/discountcode")
     @Produces(MediaType.APPLICATION_JSON)
