@@ -29,6 +29,13 @@ public class UserFacade {
         return instance;
     }
     
+    /**
+     * This method is used to check if a user with the given password exists in the DB.
+     * @param username
+     * @param password
+     * @return User The verified user.
+     * @throws AuthenticationException
+     */
     public User getVeryfiedUser(String username, String password) throws AuthenticationException {
         EntityManager em = emf.createEntityManager();
         User user;
@@ -81,10 +88,35 @@ public class UserFacade {
         return userregister;
     }
     
+    /**
+     * This method is used to change a users password.
+     * @param username
+     * @param newPassword
+     * @return User This returns the User that had his pw changed.
+     */
+    public User changeUserPW(String username, String newPassword) {
+        EntityManager em = emf.createEntityManager();
+        User user;
+        try {
+            em.getTransaction().begin();
+            user = em.find(User.class, username);
+            user.setUserPass(newPassword);
+            em.persist(user);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return user;
+    }
+    
 
      public static void main(String[] args) throws AlreadyExistsException {
          emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
         UserFacade UF = new UserFacade();
          //System.out.println(UF.createSupportUser("testsupport", "test2020"));
+         //UF.changeUserPW("user", "test12");
+//         EntityManager em = emf.createEntityManager();
+//         User user = em.find(User.class, "user");
+//         System.out.println(user.verifyPassword("test12"));
     }
 }

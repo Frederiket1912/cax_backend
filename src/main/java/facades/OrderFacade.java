@@ -46,6 +46,12 @@ public class OrderFacade {
         return instance;
     }
 
+    /**
+     * This method is used to create new orders.
+     * @param orderDTO
+     * @return CreateOrderDTO A DTO of the created order.
+     * @throws AlreadyExistsException
+     */
     public CreateOrderDTO createOrder(CreateOrderDTO orderDTO) throws AlreadyExistsException {
         EntityManager em = emf.createEntityManager();
         Order order = new Order(orderDTO.getListItems());
@@ -70,6 +76,11 @@ public class OrderFacade {
         return orderDTO;
     }
 
+    /**
+     * This method is used to get a full list of all orders from one user.
+     * @param username
+     * @return List<CheckOrderDTO> A list of all the users orders as CheckOrderDTO's. 
+     */
     public List<CheckOrderDTO> getOrdersFromUser(String username) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -87,6 +98,10 @@ public class OrderFacade {
         }
     }
 
+    /**
+     * This method is used to get a list of all orders in the DB.
+     * @return List<CheckOrderDTO> A list of all orders from all users as CheckOrderDTO's.
+     */
     public List<CheckOrderDTO> getAllOrders() {
         EntityManager em = emf.createEntityManager();
         try {
@@ -104,6 +119,11 @@ public class OrderFacade {
         }
     }
 
+    /**
+     * This method is used to mark an order as cancelled.
+     * @param id
+     * @return Order The cancelled order.
+     */
     public Order deleteOrder(String id) {
         EntityManager em = emf.createEntityManager();
         Order order = new Order();
@@ -120,6 +140,14 @@ public class OrderFacade {
         return order;
     }
 
+    /**
+     * This method is used to create new discount codes.
+     * @param name
+     * @param discountPercentage
+     * @param code
+     * @return DiscountCodeDTO a DTO of the created DiscountCode.
+     * @throws AlreadyExistsException
+     */
     public DiscountCodeDTO createDiscountCode(String name, int discountPercentage, int code) throws AlreadyExistsException {
         EntityManager em = emf.createEntityManager();
         DiscountCode dc = new DiscountCode(name, discountPercentage, code);
@@ -135,6 +163,12 @@ public class OrderFacade {
         return new DiscountCodeDTO(dc);
     }
 
+    /**
+     * This method is used to find a DiscountCode from it's id.
+     * @param id
+     * @return DiscountCodeDTO a DTO of the found DiscountCode.
+     * @throws NotFoundException
+     */
     public DiscountCodeDTO getDiscountCodeByID(int id) throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         try {
@@ -148,6 +182,12 @@ public class OrderFacade {
         }
     }
 
+    /**
+     * This method is used to find a DiscountCode from it's code.
+     * @param code
+     * @return DiscountCodeDTO a DTO of the found DiscountCode.
+     * @throws NotFoundException
+     */
     public DiscountCodeDTO getDiscountCodeByCode(int code) throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         try {
@@ -165,6 +205,10 @@ public class OrderFacade {
         }
     }
 
+    /**
+     * This method is used to get all DiscountCode's in the DB.
+     * @return List<DiscountCodeDTO> A list of all DiscountCode's in the DB.
+     */
     public List<DiscountCodeDTO> getAllDiscountCodes() {
         EntityManager em = emf.createEntityManager();
         try {
