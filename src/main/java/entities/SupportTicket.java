@@ -9,9 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 @Entity
+@NamedQuery(name = "SupportTicket.deleteAllRows", query = "DELETE from SupportTicket")
 public class SupportTicket implements Serializable {
 
     private static final long serialVersionUID = 1L;

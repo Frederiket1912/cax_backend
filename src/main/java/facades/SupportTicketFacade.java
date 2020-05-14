@@ -1,5 +1,7 @@
 package facades;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dtos.supportticketdto.GetSupportTicketDTO;
 import dtos.supportticketdto.ReplySupportTicketDTO;
 import dtos.supportticketdto.SupportTicketDTO;
@@ -10,8 +12,10 @@ import errorhandling.AlreadyExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import errorhandling.AuthenticationException;
+import errorhandling.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import utils.EMF_Creator;
 
@@ -36,7 +40,7 @@ public class SupportTicketFacade {
         return instance;
     }
     
-    public User createSupportTicket(SupportTicketDTO supticket) {
+    public SupportTicketDTO createSupportTicket(SupportTicketDTO supticket) {
         EntityManager em = emf.createEntityManager();
         User user;
         try {
@@ -48,7 +52,7 @@ public class SupportTicketFacade {
         } finally {
             em.close();
         }
-        return user;
+        return supticket;
     }
     
     public SupportTicket replySupportTicket(ReplySupportTicketDTO supticket) {
@@ -81,7 +85,7 @@ public class SupportTicketFacade {
         return ticket;
     }
     
-    public GetSupportTicketDTO getSupportTicketUser(String userName) {
+    public GetSupportTicketDTO getSupportTicketUser(String userName) throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         User user;
         GetSupportTicketDTO responsedto = new GetSupportTicketDTO();
@@ -96,13 +100,15 @@ public class SupportTicketFacade {
                 
                 responsedto = new GetSupportTicketDTO(response);
             }
+        } catch (NoResultException ex) {
+            throw new NotFoundException("No Support Tickets found.");
         } finally {
             em.close();
         }
         return responsedto;
     }
     
-    public List<GetSupportTicketDTO> getOpenSupportTickets() {
+    public List<GetSupportTicketDTO> getOpenSupportTickets() throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         List<GetSupportTicketDTO> responsedto = new ArrayList();
         try {
@@ -114,24 +120,28 @@ public class SupportTicketFacade {
                 responsedto.add(new GetSupportTicketDTO(supportTicket));
             }
                 
-            } finally {
+            } catch (NoResultException ex) {
+            throw new NotFoundException("No Tickets found.");
+        } finally {
             em.close();
         }
         return responsedto;
     }
     
 
-     public static void main(String[] args) throws AlreadyExistsException {
+     public static void main(String[] args) throws AlreadyExistsException, NotFoundException {
+         Gson gson = new GsonBuilder().setPrettyPrinting().create();
          emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
         SupportTicketFacade UF = new SupportTicketFacade();
-        /*SupportTicketDTO dto = new SupportTicketDTO();
+        SupportTicketDTO dto = new SupportTicketDTO();
         dto.setUsername("user");
         ArrayList<SupportTicket> support = new ArrayList();
         ArrayList<TicketChain> chain = new ArrayList();
         chain.add(new TicketChain("Need help with order #155151", "my order says cancelled but I haven't canceled the order", dto.getUsername()));
         support.add(new SupportTicket(chain));
         dto.setSupporttickets(support);
-        System.out.println(UF.createSupportTicket(dto));*/
+         System.out.println(gson.toJson(dto));
+        //System.out.println(UF.createSupportTicket(dto));
         
         
         //System.out.println(UF.closeSupportTicket(1));
@@ -162,6 +172,6 @@ public class SupportTicketFacade {
          
          
          
-         System.out.println(UF.getOpenSupportTickets());
+         //System.out.println(UF.getOpenSupportTickets());
     }
 }

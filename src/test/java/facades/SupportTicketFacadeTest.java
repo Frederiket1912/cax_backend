@@ -12,6 +12,7 @@ import entities.Role;
 import entities.SupportTicket;
 import entities.TicketChain;
 import entities.User;
+import errorhandling.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -149,9 +150,9 @@ public class SupportTicketFacadeTest {
         support.add(new SupportTicket(chain));
         dto.setSupporttickets(support);
         
-        User user = facade.createSupportTicket(dto);
+        SupportTicketDTO ticket = facade.createSupportTicket(dto);
         
-        assertNotNull(user.getSupportticket().get(0));
+        assertNotNull(ticket.getSupporttickets().get(0));
     }
 
 
@@ -180,7 +181,7 @@ public class SupportTicketFacadeTest {
     }
     
     @Test
-    public void getSupportTicketUser() {
+    public void getSupportTicketUser() throws NotFoundException {
         createSupportTicket();
         
         GetSupportTicketDTO dto = facade.getSupportTicketUser("test1");
@@ -188,7 +189,7 @@ public class SupportTicketFacadeTest {
     }
     
     @Test
-    public void getOpenSupportTickets() {
+    public void getOpenSupportTickets() throws NotFoundException {
         createSupportTicket();
         
         List<GetSupportTicketDTO> ticketList = facade.getOpenSupportTickets();
